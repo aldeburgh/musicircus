@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Owner: mark@famo.us
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2014
+ */
+
+define(["require","exports","module","famous/core/EventHandler"],function(t,e,i){function n(t,e,i){return{x:t.clientX,y:t.clientY,identifier:t.identifier,origin:e.origin,timestamp:a(),count:e.touches.length,history:i}}function h(t){for(var e=0;e<t.changedTouches.length;e++){var i=t.changedTouches[e],h=n(i,t,null);this.eventOutput.emit("trackstart",h),this.selective||this.touchHistory[i.identifier]||this.track(h)}}function o(t){for(var e=0;e<t.changedTouches.length;e++){var i=t.changedTouches[e],h=this.touchHistory[i.identifier];if(h){var o=n(i,t,h);this.touchHistory[i.identifier].push(o),this.eventOutput.emit("trackmove",o)}}}function s(t){for(var e=0;e<t.changedTouches.length;e++){var i=t.changedTouches[e],h=this.touchHistory[i.identifier];if(h){var o=n(i,t,h);this.eventOutput.emit("trackend",o),delete this.touchHistory[i.identifier]}}}function u(){for(var t in this.touchHistory){var e=this.touchHistory[t];this.eventOutput.emit("trackend",{touch:e[e.length-1].touch,timestamp:Date.now(),count:0,history:e}),delete this.touchHistory[t]}}function r(t){this.selective=t,this.touchHistory={},this.eventInput=new c,this.eventOutput=new c,c.setInputHandler(this,this.eventInput),c.setOutputHandler(this,this.eventOutput),this.eventInput.on("touchstart",h.bind(this)),this.eventInput.on("touchmove",o.bind(this)),this.eventInput.on("touchend",s.bind(this)),this.eventInput.on("touchcancel",s.bind(this)),this.eventInput.on("unpipe",u.bind(this))}var c=t("famous/core/EventHandler"),a=Date.now;r.prototype.track=function(t){this.touchHistory[t.identifier]=[t]},i.exports=r});

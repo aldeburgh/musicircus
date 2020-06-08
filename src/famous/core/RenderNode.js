@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Owner: mark@famo.us
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2014
+ */
+
+define(["require","exports","module","./Entity","./SpecParser"],function(t,i,e){function s(t){this._object=null,this._child=null,this._hasMultipleChildren=!1,this._isRenderable=!1,this._isModifier=!1,this._resultCache={},this._prevResults={},this._childResult=null,t&&this.set(t)}function h(t,i,e){for(var s=r.parse(t,i),n=Object.keys(s),c=0;c<n.length;c++){var o=n[c],u=l.get(o),d=s[o];d.allocator=i.allocator;var _=u.commit(d);_?h(_,i,e):e[o]=d}}var l=t("./Entity"),r=t("./SpecParser");s.prototype.add=function(t){var i=t instanceof s?t:new s(t);return this._child instanceof Array?this._child.push(i):this._child?(this._child=[this._child,i],this._hasMultipleChildren=!0,this._childResult=[]):this._child=i,i},s.prototype.get=function(){return this._object||(this._hasMultipleChildren?null:this._child?this._child.get():null)},s.prototype.set=function(t){return this._childResult=null,this._hasMultipleChildren=!1,this._isRenderable=!!t.render,this._isModifier=!!t.modify,this._object=t,this._child=null,t instanceof s?t:this},s.prototype.getSize=function(){var t=null,i=this.get();return i&&i.getSize&&(t=i.getSize()),!t&&this._child&&this._child.getSize&&(t=this._child.getSize()),t},s.prototype.commit=function(t){for(var i=Object.keys(this._prevResults),e=0;e<i.length;e++){var s=i[e];if(void 0===this._resultCache[s]){var r=l.get(s);r.cleanup&&r.cleanup(t.allocator)}}this._prevResults=this._resultCache,this._resultCache={},h(this.render(),t,this._resultCache)},s.prototype.render=function(){if(this._isRenderable)return this._object.render();var t=null;if(this._hasMultipleChildren){t=this._childResult;for(var i=this._child,e=0;e<i.length;e++)t[e]=i[e].render()}else this._child&&(t=this._child.render());return this._isModifier?this._object.modify(t):t},e.exports=s});

@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Owner: david@famo.us
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2014
+ */
+
+define(["require","exports","module","./Constraint","famous/math/Vector"],function(t,o,i){function n(t){this.options=Object.create(this.constructor.DEFAULT_OPTIONS),t&&this.setOptions(t),this.impulse=new e,this.normal=new e,this.diffP=new e,this.diffV=new e,s.call(this)}var s=t("./Constraint"),e=t("famous/math/Vector");n.prototype=Object.create(s.prototype),n.prototype.constructor=n,n.DEFAULT_OPTIONS={anchor:null,length:0,minLength:0,period:0,dampingRatio:0};var r=Math.PI;n.prototype.setOptions=function(t){t.anchor&&(t.anchor.position instanceof e&&(this.options.anchor=t.anchor.position),t.anchor instanceof e&&(this.options.anchor=t.anchor),t.anchor instanceof Array&&(this.options.anchor=new e(t.anchor))),void 0!==t.length&&(this.options.length=t.length),void 0!==t.dampingRatio&&(this.options.dampingRatio=t.dampingRatio),void 0!==t.period&&(this.options.period=t.period),void 0!==t.minLength&&(this.options.minLength=t.minLength)},n.prototype.setAnchor=function(t){this.options.anchor||(this.options.anchor=new e),this.options.anchor.set(t)},n.prototype.applyConstraint=function(t,o,i){var n,s,e=this.normal,a=this.diffP,h=this.diffV,p=this.impulse,c=this.options,l=c.dampingRatio,m=c.period,f=c.minLength;if(o){var d=o.velocity;n=o.position,s=o.inverseMass}else n=this.options.anchor,s=0;for(var u=this.options.length,v=0;v<t.length;v++){var g=t[v],y=g.velocity,O=g.position,L=g.inverseMass;a.set(O.sub(n)),e.set(a.normalize());var w=a.norm()-u;if(Math.abs(w)<f)return;o?h.set(y.sub(d)):h.set(y);var b,I,P=1/(L+s);if(0===m)b=0,I=1;else{var R=4*P*r*l/m,A=4*P*r*r/(m*m);b=1/(R+i*A),I=i*A/(R+i*A)}var M=I/i*w,T=-(e.dot(h)+M)/(b+i/P);p.set(e.mult(i*T)),g.applyImpulse(p),o&&o.applyImpulse(p.mult(-1))}},i.exports=n});

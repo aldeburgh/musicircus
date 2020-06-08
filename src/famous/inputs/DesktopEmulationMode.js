@@ -1,0 +1,1 @@
+define(["require","exports","module"],function(o,e,n){function t(o){window.addEventListener(o,function(o){return o.stopPropagation(),!1},!0)}"ontouchstart"in window&&(t("mousedown"),t("mousemove"),t("mouseup"),t("mouseleave"))});

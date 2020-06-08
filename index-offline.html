@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>famo.us App</title>
+        <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+        <!-- mobile detection -->
+        <script type='text/javascript' src="//wurfl.io/wurfl.js"></script>
+        
+        <!-- shims for backwards compatibility -->
+        <script type="text/javascript" src="../../famous-files/functionPrototypeBind.js"></script>
+        <script type="text/javascript" src="../../famous-files/classList.js"></script>
+        <script type="text/javascript" src="../../famous-files/requestAnimationFrame.js"></script>
+
+        <!-- module loader -->
+        <script type="text/javascript" src="../../famous-files/require.js"></script>
+
+        <!-- famous -->
+        <link rel="stylesheet" type="text/css" href="../../famous-files/famous.css" />
+        <script type="text/javascript" src="../../famous-files/famous.min.js"></script>
+
+        <!-- app code -->
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <script type="text/javascript">
+            require.config({baseUrl: 'src/'});
+            require(['main']);
+        </script>
+    </head>
+    <body></body>
+</html>

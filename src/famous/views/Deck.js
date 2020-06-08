@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Owner: felix@famo.us
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2014
+ */
+
+define(["require","exports","module","famous/core/Transform","famous/core/OptionsManager","famous/transitions/Transitionable","famous/utilities/Utility","./SequentialLayout"],function(t,i,o){function s(t){c.apply(this,arguments),this.state=new p(0),this._isOpen=!1,this.setOutputFunction(function(t,i,o){var s=e.call(this),n=this.options.direction===u.Direction.X?a.translate(s*i,0,.001*(s-1)*i):a.translate(0,s*i,.001*(s-1)*i),r=t.render();if(this.options.stackRotation){var p=this.options.stackRotation*o*(1-s);r={transform:a.rotateZ(p),origin:[.5,.5],target:r}}return{transform:n,size:t.getSize(),target:r}})}function e(t){return t?this._isOpen?1:0:this.state.get()}function n(t,i,o){this.state.halt(),this.state.set(t,i,o)}var a=t("famous/core/Transform"),r=t("famous/core/OptionsManager"),p=t("famous/transitions/Transitionable"),u=t("famous/utilities/Utility"),c=t("./SequentialLayout");s.prototype=Object.create(c.prototype),s.prototype.constructor=s,s.DEFAULT_OPTIONS=r.patch(c.DEFAULT_OPTIONS,{transition:{curve:"easeOutBounce",duration:500},stackRotation:0}),s.prototype.getSize=function(){var t=c.prototype.getSize.apply(this,arguments),i=this._items?this._items.get().getSize():[0,0];i||(i=[0,0]);var o=e.call(this),s=1-o;return[i[0]*s+t[0]*o,i[1]*s+t[1]*o]},s.prototype.isOpen=function(){return this._isOpen},s.prototype.open=function(t){this._isOpen=!0,n.call(this,1,this.options.transition,t)},s.prototype.close=function(t){this._isOpen=!1,n.call(this,0,this.options.transition,t)},s.prototype.toggle=function(t){this._isOpen?this.close(t):this.open(t)},o.exports=s});

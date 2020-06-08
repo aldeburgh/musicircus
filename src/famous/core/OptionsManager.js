@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Owner: mark@famo.us
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2014
+ */
+
+define(["require","exports","module","./EventHandler"],function(t,e,n){function i(t){this._value=t,this.eventOutput=null}function r(){this.eventOutput=new p,this.eventOutput.bindThis(this),p.setOutputHandler(this,this.eventOutput)}var p=t("./EventHandler");i.patch=function(t,e){for(var n=new i(t),r=1;r<arguments.length;r++)n.patch(arguments[r]);return t},i.prototype.patch=function(){for(var t=this._value,e=0;e<arguments.length;e++){var n=arguments[e];for(var i in n)i in t&&n[i]&&n[i].constructor===Object&&t[i]&&t[i].constructor===Object?(t.hasOwnProperty(i)||(t[i]=Object.create(t[i])),this.key(i).patch(n[i]),this.eventOutput&&this.eventOutput.emit("change",{id:i,value:this.key(i).value()})):this.set(i,n[i])}return this},i.prototype.setOptions=i.prototype.patch,i.prototype.key=function(t){var e=new i(this._value[t]);return e._value instanceof Object&&!(e._value instanceof Array)||(e._value={}),e},i.prototype.get=function(t){return this._value[t]},i.prototype.getOptions=i.prototype.get,i.prototype.set=function(t,e){var n=this.get(t);return this._value[t]=e,this.eventOutput&&e!==n&&this.eventOutput.emit("change",{id:t,value:e}),this},i.prototype.value=function(){return this._value},i.prototype.on=function(){return r.call(this),this.on.apply(this,arguments)},i.prototype.removeListener=function(){return r.call(this),this.removeListener.apply(this,arguments)},i.prototype.pipe=function(){return r.call(this),this.pipe.apply(this,arguments)},i.prototype.unpipe=function(){return r.call(this),this.unpipe.apply(this,arguments)},n.exports=i});

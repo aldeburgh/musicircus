@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Owner: felix@famo.us
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2014
+ */
+
+define(["require","exports","module","famous/core/Entity","famous/core/RenderNode","famous/core/Transform","famous/core/OptionsManager"],function(t,e,o){function i(t){this.options=Object.create(i.DEFAULT_OPTIONS),this._optionsManager=new d(this.options),t&&this.setOptions(t),this._entityId=a.register(this),this.header=new h,this.footer=new h,this.content=new h}function r(t,e){var o=t.getSize();return o?o[this.options.direction]:e}function n(t){return this.options.direction===i.DIRECTION_X?c.translate(t,0,0):c.translate(0,t,0)}function s(t,e){return this.options.direction===i.DIRECTION_X?[t,e[1]]:[e[0],t]}var a=t("famous/core/Entity"),h=t("famous/core/RenderNode"),c=t("famous/core/Transform"),d=t("famous/core/OptionsManager");i.DIRECTION_X=0,i.DIRECTION_Y=1,i.DEFAULT_OPTIONS={direction:i.DIRECTION_Y,headerSize:void 0,footerSize:void 0,defaultHeaderSize:0,defaultFooterSize:0},i.prototype.render=function(){return this._entityId},i.prototype.setOptions=function(t){return this._optionsManager.setOptions(t)},i.prototype.commit=function(t){var e=t.transform,o=t.origin,i=t.size,a=t.opacity,h=void 0!==this.options.headerSize?this.options.headerSize:r.call(this,this.header,this.options.defaultHeaderSize),d=void 0!==this.options.footerSize?this.options.footerSize:r.call(this,this.footer,this.options.defaultFooterSize),f=i[this.options.direction]-h-d;return i&&(e=c.moveThen([-i[0]*o[0],-i[1]*o[1],0],e)),{transform:e,opacity:a,size:i,target:[{size:s.call(this,h,i),target:this.header.render()},{transform:n.call(this,h),size:s.call(this,f,i),target:this.content.render()},{transform:n.call(this,h+f),size:s.call(this,d,i),target:this.footer.render()}]}},o.exports=i});

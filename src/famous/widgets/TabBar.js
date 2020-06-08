@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Owner: mark@famo.us
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2014
+ */
+
+define(["require","exports","module","famous/utilities/Utility","famous/core/View","famous/views/GridLayout","./ToggleButton"],function(t,s,i){function o(t){h.apply(this,arguments),this.layout=new l,this.buttons=[],this._buttonIds={},this._buttonCallbacks={},this.layout.sequenceFrom(this.buttons),this._add(this.layout),this._optionsManager.on("change",e.bind(this))}function e(t){var s=t.id,i=t.value;if("direction"===s)this.layout.setOptions({dimensions:n.call(this.buttons.length,this.options.direction)});else if("buttons"===s)for(var o in this.buttons)this.buttons[o].setOptions(i);else if("sections"===s)for(var e in this.options.sections)this.defineSection(e,this.options.sections[e])}function n(t,s){return s===u.Direction.X?[t,1]:[1,t]}var u=t("famous/utilities/Utility"),h=t("famous/core/View"),l=t("famous/views/GridLayout"),c=t("./ToggleButton");o.prototype=Object.create(h.prototype),o.prototype.constructor=o,o.DEFAULT_OPTIONS={sections:[],widget:c,size:[void 0,50],direction:u.Direction.X,buttons:{toggleMode:c.ON}},o.prototype.defineSection=function(t,s){var i,o=this._buttonIds[t];if(void 0===o){o=this.buttons.length,this._buttonIds[t]=o;i=new(0,this.options.widget),this.buttons[o]=i,this.layout.setOptions({dimensions:n(this.buttons.length,this.options.direction)})}else i=this.buttons[o],i.unbind("select",this._buttonCallbacks[t]);this.options.buttons&&i.setOptions(this.options.buttons),i.setOptions(s),this._buttonCallbacks[t]=this.select.bind(this,t),i.on("select",this._buttonCallbacks[t])},o.prototype.select=function(t){var s=this._buttonIds[t];this.buttons[s]&&this.buttons[s].isSelected()?this._eventOutput.emit("select",{id:t}):this.buttons[s]&&this.buttons[s].select();for(var i=0;i<this.buttons.length;i++)i!==s&&this.buttons[i].deselect()},i.exports=o});

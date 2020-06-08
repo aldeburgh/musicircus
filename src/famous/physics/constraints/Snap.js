@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Owner: david@famo.us
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2014
+ */
+
+define(["require","exports","module","./Constraint","famous/math/Vector"],function(t,o,i){function n(t){this.options=Object.create(this.constructor.DEFAULT_OPTIONS),t&&this.setOptions(t),this.pDiff=new r,this.vDiff=new r,this.impulse1=new r,this.impulse2=new r,e.call(this)}function s(t,o,i){return Math.abs(t.dot(o)/i)}var e=t("./Constraint"),r=t("famous/math/Vector");n.prototype=Object.create(e.prototype),n.prototype.constructor=n,n.DEFAULT_OPTIONS={period:300,dampingRatio:.1,length:0,anchor:void 0};var p=Math.PI;n.prototype.setOptions=function(t){void 0!==t.anchor&&(t.anchor instanceof r&&(this.options.anchor=t.anchor),t.anchor.position instanceof r&&(this.options.anchor=t.anchor.position),t.anchor instanceof Array&&(this.options.anchor=new r(t.anchor))),void 0!==t.length&&(this.options.length=t.length),void 0!==t.dampingRatio&&(this.options.dampingRatio=t.dampingRatio),void 0!==t.period&&(this.options.period=t.period)},n.prototype.setAnchor=function(t){void 0!==this.options.anchor&&(this.options.anchor=new r),this.options.anchor.set(t)},n.prototype.getEnergy=function(t,o){var i=this.options,n=i.length,s=i.anchor||o.position,e=Math.pow(2*p/i.period,2),r=s.sub(t.position).norm()-n;return.5*e*r*r},n.prototype.applyConstraint=function(t,o,i){for(var n=this.options,e=this.pDiff,r=this.vDiff,a=this.impulse1,h=this.impulse2,c=n.length,u=n.anchor||o.position,l=n.period,f=n.dampingRatio,m=0;m<t.length;m++){var v=t[m],d=v.position,g=v.velocity,y=v.mass,O=v.inverseMass;e.set(d.sub(u));var b,w=e.norm()-c;if(o){var D=o.inverseMass,I=o.velocity;r.set(g.sub(I)),b=1/(O+D)}else r.set(g),b=y;var M,R;if(0===this.options.period)M=0,R=1;else{var A=4*b*p*p/(l*l),E=4*b*p*f/l;R=i*A/(E+i*A),M=1/(E+i*A)}var T=R/i*w;e.normalize(-T).sub(r).mult(i/(M+i/b)).put(a),v.applyImpulse(a),o&&(a.mult(-1).put(h),o.applyImpulse(h)),this.setEnergy(s(a,e,i))}},i.exports=n});
